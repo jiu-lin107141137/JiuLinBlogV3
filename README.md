@@ -1,6 +1,30 @@
 # JiuLin Blog V3
 
-A Vue 3 personal blog for writing posts in Markdown, with English and Traditional Chinese routes, automatic tag/category indexes, article table of contents, and a particle-style background.
+A Vue 3 personal blog for Markdown-first writing, bilingual English and Traditional Chinese routes, automatic archive/tag/category pages, article reading tools, and GitHub Pages deployment.
+
+Live site:
+
+```txt
+https://jiu-lin107141137.github.io/JiuLinBlogV3/
+```
+
+## Features
+
+- Markdown posts with frontmatter
+- English and Traditional Chinese content routes
+- Automatic archive, tag, and category pages
+- Localized language switcher
+- Light and dark theme toggle
+- Responsive collapsible header
+- Article table of contents with active-section highlighting
+- Reading progress bar
+- Estimated reading time in article headers and post cards
+- Copy buttons for fenced code blocks
+- Article image captions from Markdown alt text
+- Image lightbox with previous/next navigation
+- Same-category previous/next article navigation
+- Back-to-top button
+- Particle-style background
 
 ## Tech Stack
 
@@ -12,106 +36,122 @@ A Vue 3 personal blog for writing posts in Markdown, with English and Traditiona
 - Markdown-it
 - tsParticles
 
-## Environment
+## Setup
 
-Use `nvm` before installing dependencies.
+Use Node `18.20.8`. With `nvm`:
 
 ```sh
 nvm install 18.20.8
 nvm use
 ```
 
-Then install and run:
+Install dependencies:
 
 ```sh
 npm install
+```
+
+Start the dev server:
+
+```sh
 npm run dev
 ```
 
-Production build:
+Build for production:
 
 ```sh
 npm run build
 ```
 
-Preview the build:
+Preview the production build:
 
 ```sh
 npm run preview
 ```
 
-## Project Architecture
+Type-check only:
+
+```sh
+npm run typecheck
+```
+
+## Project Structure
 
 ```txt
 .
-├─ public/
-│  ├─ avatar.jpg
-│  ├─ cover.jpg
-│  └─ favicon.svg
-├─ src/
-│  ├─ assets/
-│  │  └─ main.css
-│  ├─ components/
-│  │  ├─ ArticleToc.vue
-│  │  ├─ ParticlesBackground.vue
-│  │  ├─ PostCard.vue
-│  │  ├─ ProfilePanel.vue
-│  │  └─ SiteHeader.vue
-│  ├─ content/
-│  │  ├─ en/
-│  │  └─ zh-TW/
-│  ├─ data/
-│  │  └─ profile.ts
-│  ├─ i18n/
-│  │  └─ index.ts
-│  ├─ router/
-│  │  └─ index.ts
-│  ├─ utils/
-│  │  ├─ frontmatter.ts
-│  │  ├─ markdown.ts
-│  │  └─ posts.ts
-│  ├─ views/
-│  │  ├─ ArticleView.vue
-│  │  ├─ HomeView.vue
-│  │  └─ ListingView.vue
-│  ├─ App.vue
-│  ├─ AppShell.vue
-│  └─ main.ts
-├─ .nvmrc
-├─ package.json
-└─ vite.config.ts
+|-- public/
+|   |-- avatar.jpg
+|   |-- cover.jpg
+|   |-- favicon.ico
+|   `-- favicon.svg
+|-- src/
+|   |-- assets/
+|   |   `-- main.css
+|   |-- components/
+|   |   |-- ArticleToc.vue
+|   |   |-- BackToTopButton.vue
+|   |   |-- ImageLightbox.vue
+|   |   |-- ParticlesBackground.vue
+|   |   |-- PostCard.vue
+|   |   |-- ProfilePanel.vue
+|   |   `-- SiteHeader.vue
+|   |-- content/
+|   |   |-- en/
+|   |   `-- zh-TW/
+|   |-- data/
+|   |   `-- profile.ts
+|   |-- i18n/
+|   |   `-- index.ts
+|   |-- router/
+|   |   `-- index.ts
+|   |-- utils/
+|   |   |-- frontmatter.ts
+|   |   |-- markdown.ts
+|   |   `-- posts.ts
+|   |-- views/
+|   |   |-- ArticleView.vue
+|   |   |-- HomeView.vue
+|   |   `-- ListingView.vue
+|   |-- App.vue
+|   |-- AppShell.vue
+|   |-- env.d.ts
+|   `-- main.ts
+|-- .github/workflows/deploy.yml
+|-- .nvmrc
+|-- package.json
+`-- vite.config.ts
 ```
 
-## Website Architecture
+## App Architecture
 
 The app is a static Vite SPA.
 
-- `main.ts` creates the Vue app, registers router, i18n, and tsParticles.
-- `App.vue` syncs the current route locale into Vue I18n.
-- `AppShell.vue` owns the shared layout: particle background, header, page content, footer.
-- `router/index.ts` defines locale-prefixed routes.
-- `utils/posts.ts` loads every Markdown file with `import.meta.glob`.
-- `utils/frontmatter.ts` parses each Markdown file's metadata.
-- `utils/markdown.ts` renders Markdown and extracts headings for the article TOC.
+- `src/main.ts` creates the Vue app and registers router, i18n, and tsParticles.
+- `src/App.vue` syncs the route locale into Vue I18n and local storage.
+- `src/AppShell.vue` owns the shared page shell: background, header, main content, footer, and back-to-top button.
+- `src/router/index.ts` defines hash-based, locale-prefixed routes.
+- `src/utils/posts.ts` loads Markdown files with `import.meta.glob`, parses metadata, and computes reading time.
+- `src/utils/frontmatter.ts` parses frontmatter.
+- `src/utils/markdown.ts` renders Markdown, extracts headings, adds code-copy wrappers, resolves image paths, and renders image captions.
 
 ## Routes
 
-All public pages are locale-prefixed:
+All public content routes are locale-prefixed:
 
 ```txt
-/en
-/zh-TW
-/en/archive
-/zh-TW/archive
-/en/posts/:slug
-/zh-TW/posts/:slug
-/en/tags/:tag
-/zh-TW/tags/:tag
-/en/categories/:category
-/zh-TW/categories/:category
+/#/en
+/#/zh-TW
+/#/en/archive
+/#/zh-TW/archive
+/#/en/posts/:slug
+/#/zh-TW/posts/:slug
+/#/en/tags/:tag
+/#/zh-TW/tags/:tag
+/#/en/categories/:category
+/#/zh-TW/categories/:category
 ```
 
-The root route `/` redirects to a preferred locale from local storage or browser language.
+The root route redirects to the saved locale, or to a locale inferred from the browser language.
 
 ## Content Model
 
@@ -124,11 +164,11 @@ src/content/en/my-post.md
 src/content/zh-TW/my-post.md
 ```
 
-The file name becomes the slug:
+The file name becomes the article slug:
 
 ```txt
-/en/posts/my-post
-/zh-TW/posts/my-post
+/#/en/posts/my-post
+/#/zh-TW/posts/my-post
 ```
 
 Each post uses frontmatter:
@@ -162,95 +202,83 @@ Optional fields:
 
 Draft posts are excluded from public lists when `draft: true`.
 
-## Tags and Categories
+## Markdown Images
 
-Tags and categories are generated automatically from Markdown frontmatter.
-
-You do not need to maintain a separate tag config file. If a new article uses a new tag, the homepage/profile tag list and tag counts update automatically.
-
-Example:
+Markdown image alt text is rendered as a visible caption under the article image:
 
 ```md
-tags: ["Vue", "Router", "Architecture"]
-category: "Blog"
+![Caption shown below the image](cover.jpg)
 ```
 
-Categories are broad groups. Tags are more specific labels.
+Images can be clicked to open the lightbox. The lightbox supports:
 
-When switching languages on tag/category pages, the app maps localized terms by matching translated posts with the same slug. For example, `架構` can map to `Architecture`.
+- close button
+- backdrop click
+- `Escape`
+- previous/next buttons
+- `ArrowLeft` and `ArrowRight`
 
-## Homepage
+Local public images should usually be referenced by file name, for example `cover.jpg`. The Markdown renderer resolves them with `import.meta.env.BASE_URL`, so they work under the GitHub Pages subpath.
 
-The homepage contains:
+## Reading Time
 
-- hero section
-- profile panel
-- article/category/tag counts
-- generated tag summary
-- search box
-- latest article cards
+Reading time is computed in `src/utils/posts.ts`.
 
-Only the latest four matching posts are shown on the homepage. If the blog grows to hundreds of posts, the homepage remains short. Archive, tag, and category pages currently show all matching posts.
+- Code blocks are ignored.
+- Non-CJK text is estimated at about 220 words per minute.
+- CJK text is estimated at about 450 characters per minute.
+- The displayed value is at least 1 minute.
 
-## Article Page
+The estimate appears in article headers and post cards.
 
-The article page contains:
+## Tags And Categories
 
-- article category
-- title
-- description
-- author/date metadata
-- tags
-- rendered Markdown body
-- left category navigation
-- right table of contents
+Tags and categories are generated from Markdown frontmatter.
 
-The table of contents is generated from Markdown headings and highlights the current section while scrolling.
+You do not need a separate tag config file. New tags and categories appear automatically in article lists, profile stats, archives, and filters.
 
-## I18n
-
-UI translations are stored in `src/i18n/index.ts`.
-
-Supported locales:
-
-- `en`
-- `zh-TW`
-
-Article translations are stored as separate Markdown files under `src/content/en` and `src/content/zh-TW`.
+When switching languages on tag/category pages, the app maps localized terms by matching translated posts with the same slug.
 
 ## Styling
 
 Global styling lives in `src/assets/main.css`.
 
-The visual system uses:
+The visual system includes:
 
-- dark surfaces
+- light and dark themes
+- translucent panels
 - purple accent color
 - restrained card borders
-- particle background
 - responsive layouts
-- reduced-motion fallback for animations
+- animation polish
+- reduced-motion fallbacks
 
-Shared UI pieces are implemented as Vue components in `src/components`.
+Shared UI pieces live in `src/components`.
 
 ## Static Assets
 
 Static files live in `public`.
 
 - `avatar.jpg`: profile image
-- `cover.jpg`: page background image
+- `cover.jpg`: page background and demo image
+- `favicon.ico`: browser tab icon
 - `favicon.svg`: browser tab icon
-
-Files in `public` are served from the site root.
 
 ## Deployment
 
-Build the project:
+The project deploys to GitHub Pages through `.github/workflows/deploy.yml`.
 
-```sh
-npm run build
+The workflow runs on pushes to `main`:
+
+1. Install dependencies with `npm ci`
+2. Build with `npm run build`
+3. Copy `dist/index.html` to `dist/404.html` for SPA fallback
+4. Deploy the `dist` folder to GitHub Pages
+
+The Vite base path is configured in `vite.config.ts`:
+
+```ts
+base: '/JiuLinBlogV3/',
 ```
 
-Deploy the generated `dist` folder to any static hosting provider.
-
-If deploying under a subpath, update `base` in `vite.config.ts`.
+If the repository name or deployment path changes, update this value.
