@@ -48,6 +48,11 @@ export const messages = {
       tag: 'Tag',
       category: 'Category',
       archive: 'Archive',
+      count: '{count} articles',
+      tagDescription: 'Articles tagged with {title}, sorted by newest first.',
+      categoryDescription: 'Articles in {title}, with related topics below.',
+      archiveDescription: 'All published notes, sorted by newest first.',
+      relatedTags: 'Related tags',
     },
     footer: {
       built: 'Built with Vue 3, Markdown, and a small amount of stubborn care.',
@@ -89,6 +94,11 @@ export const messages = {
       tag: '標籤',
       category: '分類',
       archive: '文章彙整',
+      count: '{count} 篇文章',
+      tagDescription: '所有標記為「{title}」的文章，依最新時間排序。',
+      categoryDescription: '「{title}」分類中的文章，並整理相關主題。',
+      archiveDescription: '所有已發布文章，依最新時間排序。',
+      relatedTags: '相關標籤',
     },
     footer: {
       built: '使用 Vue 3、Markdown，和一點固執的細心打造。',
