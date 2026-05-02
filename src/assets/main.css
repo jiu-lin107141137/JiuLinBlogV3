@@ -35,9 +35,9 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #f7f3fb;
+  --bg: #eee8f4;
   --surface: #ffffff;
-  --surface-raised: #f3edf8;
+  --surface-raised: #f7f2fb;
   --line: #d8ccdf;
   --text: #191421;
   --muted: #667085;
@@ -48,10 +48,10 @@
   --gold: #b45309;
   --green: #15803d;
   --active-text: #ffffff;
-  --body-scrim: linear-gradient(180deg, rgb(247 243 251 / 0.9), var(--bg) 560px);
-  --ambient-overlay: linear-gradient(90deg, rgb(139 92 246 / 0.08), transparent 34%, rgb(225 29 72 / 0.055));
-  --header-bg: rgb(255 255 255 / 0.8);
-  --panel-bg: rgb(255 255 255 / 0.84);
+  --body-scrim: linear-gradient(180deg, rgb(238 232 244 / 0.58), rgb(238 232 244 / 0.86) 720px);
+  --ambient-overlay: linear-gradient(90deg, rgb(139 92 246 / 0.05), transparent 38%, rgb(225 29 72 / 0.035));
+  --header-bg: rgb(248 244 252 / 0.76);
+  --panel-bg: rgb(255 255 255 / 0.76);
   --panel-border: rgb(45 34 57 / 0.13);
   --control-bg: rgb(255 255 255 / 0.68);
   --control-border: rgb(45 34 57 / 0.16);
