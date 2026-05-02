@@ -1004,6 +1004,13 @@ button {
   position: relative;
   padding: 0.38rem 0.2rem 0.38rem calc(0.85rem + max(var(--depth), 0) * 0.95rem);
   border-left: 2px solid var(--panel-border);
+  border-radius: 0 6px 6px 0;
+  transform: translateX(0);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .article-toc a::before {
@@ -1014,6 +1021,9 @@ button {
   width: 0.42rem;
   height: 1px;
   background: var(--control-border);
+  transition:
+    background 180ms ease,
+    width 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .article-toc .toc-level-3 {
@@ -1028,6 +1038,18 @@ button {
 }
 
 .article-toc a.active::before {
+  background: var(--accent);
+}
+
+.article-toc a:hover,
+.article-toc a:focus-visible {
+  color: var(--text);
+  border-left-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.article-toc a:hover::before,
+.article-toc a:focus-visible::before {
   background: var(--accent);
 }
 
