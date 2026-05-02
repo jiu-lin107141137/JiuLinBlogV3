@@ -5,6 +5,13 @@ defineProps<{
   headings: Heading[];
   activeHeadingId: string;
 }>();
+
+const scrollToHeading = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
+};
 </script>
 
 <template>
@@ -16,6 +23,7 @@ defineProps<{
       :href="`#${heading.id}`"
       :class="[`toc-level-${heading.level}`, { active: heading.id === activeHeadingId }]"
       :style="{ '--depth': String(heading.level - 2) }"
+      @click.prevent="scrollToHeading(heading.id)"
     >
       {{ heading.text }}
     </a>
