@@ -948,15 +948,56 @@ button {
 
 .article-related .category-post-link {
   position: relative;
-  padding: 0.55rem 0.55rem 0.55rem 0.85rem;
+  padding: 0.55rem 1.8rem 0.55rem 0.85rem;
   border-left: 2px solid var(--panel-border);
   border-radius: 0 6px 6px 0;
+  background: transparent;
+  transform: translateX(0);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.article-related .category-post-link::after {
+  content: ">";
+  position: absolute;
+  top: 50%;
+  right: 0.65rem;
+  color: var(--accent);
+  font-weight: 800;
+  opacity: 0;
+  transform: translate(-0.35rem, -50%);
+  transition:
+    opacity 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .article-related .category-post-link.active {
   color: var(--text);
   border-left-color: var(--accent);
   background: var(--accent-wash);
+  cursor: default;
+}
+
+.article-related .category-post-link:not(.active):hover,
+.article-related .category-post-link:not(.active):focus-visible {
+  color: var(--text);
+  border-left-color: var(--accent);
+  background: var(--accent-wash);
+  transform: translateX(0.18rem);
+}
+
+.article-related .category-post-link:not(.active):hover::after,
+.article-related .category-post-link:not(.active):focus-visible::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.article-related .category-post-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .article-toc a {
