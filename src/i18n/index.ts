@@ -42,6 +42,7 @@ export const messages = {
       updated: 'Updated',
       previous: 'Previous',
       next: 'Next',
+      readingTime: '{minutes} min read',
     },
     listing: {
       tag: 'Tag',
@@ -82,6 +83,7 @@ export const messages = {
       updated: '更新',
       previous: '上一篇',
       next: '下一篇',
+      readingTime: '約 {minutes} 分鐘閱讀',
     },
     listing: {
       tag: '標籤',

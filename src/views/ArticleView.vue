@@ -270,6 +270,7 @@ watch(
         <div class="article-meta">
           <span>{{ $t('article.by') }} JiuLin</span>
           <time :datetime="post.date">{{ formatDate(post.date) }}</time>
+          <span>{{ $t('article.readingTime', { minutes: post.readingMinutes }) }}</span>
           <span v-if="post.updated">{{ $t('article.updated') }} {{ formatDate(post.updated) }}</span>
         </div>
         <div class="post-tags">

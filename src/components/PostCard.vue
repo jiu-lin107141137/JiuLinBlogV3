@@ -27,6 +27,7 @@ const formatDate = (date: string) =>
     <p>{{ post.description }}</p>
     <div class="post-meta">
       <time :datetime="post.date">{{ formatDate(post.date) }}</time>
+      <span>{{ $t('article.readingTime', { minutes: post.readingMinutes }) }}</span>
       <RouterLink :to="{ name: 'category', params: { locale, category: post.category } }">
         {{ post.category }}
       </RouterLink>
