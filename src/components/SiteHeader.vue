@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, type CSSProperties } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { RouteParamsRawGeneric } from 'vue-router';
 import { localeLabels, supportedLocales, type Locale } from '@/i18n';
@@ -9,6 +9,11 @@ const route = useRoute();
 const router = useRouter();
 
 const currentLocale = computed(() => route.params.locale as Locale);
+const activeLocaleIndex = computed(() => supportedLocales.indexOf(currentLocale.value));
+const localeSwitcherStyle = computed<CSSProperties>(() => ({
+  '--active-index': String(Math.max(activeLocaleIndex.value, 0)),
+  '--locale-count': String(supportedLocales.length),
+}));
 
 const switchLocale = async (locale: Locale) => {
   const params: RouteParamsRawGeneric = {
@@ -57,7 +62,7 @@ const switchLocale = async (locale: Locale) => {
       </RouterLink>
     </nav>
 
-    <div class="locale-switcher" :aria-label="$t('nav.language')">
+    <div class="locale-switcher" :style="localeSwitcherStyle" :aria-label="$t('nav.language')">
       <button
         v-for="locale in supportedLocales"
         :key="locale"

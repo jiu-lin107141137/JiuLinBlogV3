@@ -150,8 +150,47 @@ button {
 }
 
 .nav-links a {
+  position: relative;
+  isolation: isolate;
   padding: 0.5rem 0.2rem;
   border-bottom: 2px solid transparent;
+  transform: translateY(0);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-links a::before {
+  content: "";
+  position: absolute;
+  inset: 0.15rem -0.55rem;
+  z-index: -1;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgb(192 132 252 / 0.18), rgb(251 113 133 / 0.12));
+  box-shadow: 0 0.55rem 1.4rem rgb(192 132 252 / 0.16);
+  opacity: 0;
+  transform: scaleX(0.82);
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.nav-links a:hover::before,
+.nav-links a:focus-visible::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0.35rem;
 }
 
 .nav-links a.router-link-exact-active {
@@ -160,25 +199,70 @@ button {
 }
 
 .locale-switcher {
-  gap: 0.35rem;
+  --active-index: 0;
+  --locale-count: 2;
+  --switcher-gap: 0.35rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--locale-count), minmax(0, 1fr));
+  gap: var(--switcher-gap);
   padding: 0.25rem;
   border: 1px solid rgb(255 255 255 / 0.16);
   border-radius: 999px;
   background: rgb(0 0 0 / 0.2);
+  overflow: hidden;
+}
+
+.locale-switcher::before {
+  content: "";
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0.25rem;
+  z-index: 0;
+  width: calc((100% - 0.5rem - (var(--locale-count) - 1) * var(--switcher-gap)) / var(--locale-count));
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0.45rem 1.2rem rgb(192 132 252 / 0.32);
+  transform: translateX(calc(var(--active-index) * (100% + var(--switcher-gap))));
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 260ms ease;
 }
 
 .locale-button {
+  position: relative;
+  z-index: 1;
   min-height: 2rem;
+  min-width: 4rem;
   padding: 0 0.75rem;
   border: 0;
   border-radius: 999px;
   color: var(--muted);
   background: transparent;
+  transform: translateY(0) scale(1);
+  transition:
+    color 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .locale-button.active {
   color: #071014;
-  background: var(--accent);
+  transform: translateY(-1px) scale(1.03);
+}
+
+.locale-button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a,
+  .nav-links a::before,
+  .locale-switcher::before,
+  .locale-button {
+    transition: none;
+  }
 }
 
 .site-main {
