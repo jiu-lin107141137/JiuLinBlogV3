@@ -1081,9 +1081,51 @@ button {
   background: var(--code-bg);
 }
 
+.code-block {
+  position: relative;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  z-index: 1;
+  min-height: 1.85rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--control-border);
+  border-radius: 5px;
+  color: var(--muted);
+  background: var(--control-bg);
+  font-size: 0.76rem;
+  font-weight: 700;
+  transform: translateY(0);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.copy-code-button:hover,
+.copy-code-button:focus-visible,
+.copy-code-button.copied {
+  border-color: var(--hero-action-hover-border);
+  color: var(--text);
+  background: var(--hero-action-hover-bg);
+}
+
+.copy-code-button:hover {
+  transform: translateY(-1px);
+}
+
+.copy-code-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .markdown-body pre {
   overflow: auto;
-  padding: 1rem;
+  padding: 3rem 1rem 1rem;
   border: 1px solid var(--panel-border);
   border-radius: 8px;
   background: var(--pre-bg);
@@ -1123,7 +1165,8 @@ button {
   .post-card,
   .post-card::before,
   .post-card::after,
-  .post-card-title::after {
+  .post-card-title::after,
+  .copy-code-button {
     transition: none;
   }
 

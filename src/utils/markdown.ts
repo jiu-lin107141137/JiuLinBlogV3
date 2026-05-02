@@ -29,6 +29,9 @@ const md = new MarkdownIt({
 const defaultHeadingOpen =
   md.renderer.rules.heading_open ??
   ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options));
+const defaultFence =
+  md.renderer.rules.fence ??
+  ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options));
 
 md.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
@@ -48,6 +51,12 @@ md.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
   });
 
   return defaultHeadingOpen(tokens, idx, options, env, self);
+};
+
+md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+  const renderedCode = defaultFence(tokens, idx, options, env, self);
+
+  return `<div class="code-block"><button class="copy-code-button" type="button" aria-label="Copy code">Copy</button>${renderedCode}</div>`;
 };
 
 const addLinkTargets = (tokens: MarkdownToken[]) => {

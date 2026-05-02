@@ -84,6 +84,43 @@ const formatDate = (date?: string) => {
   }).format(new Date(`${date}T00:00:00`));
 };
 
+const writeClipboardText = async (text: string) => {
+  if (window.navigator.clipboard) {
+    await window.navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '-9999px';
+  document.body.append(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  textarea.remove();
+};
+
+const copyCode = async (event: MouseEvent) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const button = target.closest<HTMLButtonElement>('.copy-code-button');
+  if (!button) return;
+
+  const code = button.closest('.code-block')?.querySelector('code')?.textContent;
+  if (!code) return;
+
+  await writeClipboardText(code);
+  button.textContent = 'Copied';
+  button.classList.add('copied');
+
+  window.setTimeout(() => {
+    button.textContent = 'Copy';
+    button.classList.remove('copied');
+  }, 1400);
+};
+
 onMounted(() => {
   window.addEventListener('scroll', updateArticleScrollState, { passive: true });
   window.addEventListener('resize', updateArticleScrollState);
@@ -153,7 +190,7 @@ watch(
         </div>
       </header>
 
-      <div class="markdown-body" v-html="rendered.html"></div>
+      <div class="markdown-body" @click="copyCode" v-html="rendered.html"></div>
     </article>
 
     <ArticleToc :headings="rendered.headings" :active-heading-id="activeHeadingId" />
