@@ -20,6 +20,18 @@ const slugify = (value: string) =>
     .replace(/[^\p{Letter}\p{Number}\s-]/gu, '')
     .replace(/\s+/g, '-');
 
+const baseUrl = import.meta.env.BASE_URL;
+
+const withBaseUrl = (src: string) => {
+  if (/^(?:[a-z]+:)?\/\//i.test(src) || /^(?:data|blob):/i.test(src) || src.startsWith('#')) return src;
+  if (src.startsWith(baseUrl)) return src;
+
+  const cleanBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const cleanSrc = src.replace(/^\.?\//, '');
+
+  return `${cleanBase}${cleanSrc}`;
+};
+
 const md = new MarkdownIt({
   html: false,
   linkify: true,
@@ -32,6 +44,9 @@ const defaultHeadingOpen =
 const defaultFence =
   md.renderer.rules.fence ??
   ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options));
+const defaultImage =
+  md.renderer.rules.image ??
+  ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options));
 
 md.renderer.rules.heading_open = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
@@ -57,6 +72,20 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
   const renderedCode = defaultFence(tokens, idx, options, env, self);
 
   return `<div class="code-block"><button class="copy-code-button" type="button" aria-label="Copy code">Copy</button>${renderedCode}</div>`;
+};
+
+md.renderer.rules.image = (tokens, idx, options, env, self) => {
+  const token = tokens[idx];
+  const src = token.attrGet('src');
+
+  if (src) token.attrSet('src', withBaseUrl(src));
+
+  token.attrSet('loading', 'lazy');
+  token.attrSet('decoding', 'async');
+  token.attrSet('tabindex', '0');
+  token.attrSet('role', 'button');
+
+  return defaultImage(tokens, idx, options, env, self);
 };
 
 const addLinkTargets = (tokens: MarkdownToken[]) => {

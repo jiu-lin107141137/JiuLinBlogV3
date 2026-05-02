@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch, type CSSProperties } from 'vue';
 import { useRoute } from 'vue-router';
+import ImageLightbox from '@/components/ImageLightbox.vue';
 import ArticleToc from '@/components/ArticleToc.vue';
 import { getPost, listPosts } from '@/utils/posts';
 import { renderMarkdown } from '@/utils/markdown';
@@ -14,6 +15,7 @@ const rendered = computed(() => renderMarkdown(post.value?.body ?? ''));
 const activeHeadingId = ref('');
 const articleBody = ref<HTMLElement | null>(null);
 const readingProgress = ref(0);
+const lightboxImage = ref<{ src: string; alt: string } | null>(null);
 const readingProgressStyle = computed<CSSProperties>(() => ({
   transform: `scaleX(${readingProgress.value})`,
 }));
@@ -132,14 +134,53 @@ const copyCode = async (event: MouseEvent) => {
   }, 1400);
 };
 
+const openImageLightbox = (image: HTMLImageElement) => {
+  lightboxImage.value = {
+    src: image.currentSrc || image.src,
+    alt: image.alt,
+  };
+};
+
+const closeImageLightbox = () => {
+  lightboxImage.value = null;
+};
+
+const handleMarkdownClick = async (event: MouseEvent) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const image = target.closest<HTMLImageElement>('.markdown-body img');
+  if (image) {
+    openImageLightbox(image);
+    return;
+  }
+
+  await copyCode(event);
+};
+
+const handleMarkdownKeydown = (event: KeyboardEvent) => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  const target = event.target;
+  if (!(target instanceof HTMLImageElement)) return;
+
+  event.preventDefault();
+  openImageLightbox(target);
+};
+
+const handleWindowKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') closeImageLightbox();
+};
+
 onMounted(() => {
   window.addEventListener('scroll', updateArticleScrollState, { passive: true });
   window.addEventListener('resize', updateArticleScrollState);
+  window.addEventListener('keydown', handleWindowKeydown);
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateArticleScrollState);
   window.removeEventListener('resize', updateArticleScrollState);
+  window.removeEventListener('keydown', handleWindowKeydown);
 });
 
 watch(
@@ -201,7 +242,7 @@ watch(
         </div>
       </header>
 
-      <div class="markdown-body" @click="copyCode" v-html="rendered.html"></div>
+      <div class="markdown-body" @click="handleMarkdownClick" @keydown="handleMarkdownKeydown" v-html="rendered.html"></div>
 
       <nav
         v-if="adjacentPosts.previous || adjacentPosts.next"
@@ -242,7 +283,14 @@ watch(
     <ArticleToc :headings="rendered.headings" :active-heading-id="activeHeadingId" />
   </section>
 
-  <section v-else class="listing-page page-pad">
+  <ImageLightbox
+    v-if="lightboxImage"
+    :src="lightboxImage.src"
+    :alt="lightboxImage.alt"
+    @close="closeImageLightbox"
+  />
+
+  <section v-if="!post" class="listing-page page-pad">
     <div class="listing-heading">
       <p class="eyebrow">404</p>
       <h1>{{ $t('article.missing') }}</h1>
