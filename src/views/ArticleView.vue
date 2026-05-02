@@ -15,10 +15,14 @@ const rendered = computed(() => renderMarkdown(post.value?.body ?? ''));
 const activeHeadingId = ref('');
 const articleBody = ref<HTMLElement | null>(null);
 const readingProgress = ref(0);
-const lightboxImage = ref<{ src: string; alt: string } | null>(null);
+const articleImages = ref<{ src: string; alt: string }[]>([]);
+const lightboxImageIndex = ref<number | null>(null);
 const readingProgressStyle = computed<CSSProperties>(() => ({
   transform: `scaleX(${readingProgress.value})`,
 }));
+const lightboxImage = computed(() =>
+  lightboxImageIndex.value === null ? null : articleImages.value[lightboxImageIndex.value],
+);
 
 const clampProgress = (value: number) => Math.min(Math.max(value, 0), 1);
 
@@ -134,15 +138,40 @@ const copyCode = async (event: MouseEvent) => {
   }, 1400);
 };
 
-const openImageLightbox = (image: HTMLImageElement) => {
-  lightboxImage.value = {
+const getMarkdownImages = () =>
+  [...(articleBody.value?.querySelectorAll<HTMLImageElement>('.markdown-body img') ?? [])];
+
+const updateArticleImages = () => {
+  articleImages.value = getMarkdownImages().map((image) => ({
     src: image.currentSrc || image.src,
     alt: image.alt,
-  };
+  }));
+
+  if (lightboxImageIndex.value !== null && !articleImages.value[lightboxImageIndex.value]) {
+    lightboxImageIndex.value = null;
+  }
+};
+
+const openImageLightbox = (image: HTMLImageElement) => {
+  updateArticleImages();
+
+  const imageIndex = getMarkdownImages().findIndex((candidate) => candidate === image);
+  lightboxImageIndex.value = imageIndex >= 0 ? imageIndex : 0;
 };
 
 const closeImageLightbox = () => {
-  lightboxImage.value = null;
+  lightboxImageIndex.value = null;
+};
+
+const showPreviousImage = () => {
+  if (lightboxImageIndex.value === null || articleImages.value.length < 2) return;
+  lightboxImageIndex.value =
+    (lightboxImageIndex.value - 1 + articleImages.value.length) % articleImages.value.length;
+};
+
+const showNextImage = () => {
+  if (lightboxImageIndex.value === null || articleImages.value.length < 2) return;
+  lightboxImageIndex.value = (lightboxImageIndex.value + 1) % articleImages.value.length;
 };
 
 const handleMarkdownClick = async (event: MouseEvent) => {
@@ -169,6 +198,17 @@ const handleMarkdownKeydown = (event: KeyboardEvent) => {
 
 const handleWindowKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') closeImageLightbox();
+  if (!lightboxImage.value) return;
+
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    showPreviousImage();
+  }
+
+  if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    showNextImage();
+  }
 };
 
 onMounted(() => {
@@ -188,6 +228,7 @@ watch(
   async () => {
     await nextTick();
     updateArticleScrollState();
+    updateArticleImages();
   },
   { immediate: true },
 );
@@ -287,7 +328,11 @@ watch(
     v-if="lightboxImage"
     :src="lightboxImage.src"
     :alt="lightboxImage.alt"
+    :index="lightboxImageIndex ?? 0"
+    :total="articleImages.length"
     @close="closeImageLightbox"
+    @previous="showPreviousImage"
+    @next="showNextImage"
   />
 
   <section v-if="!post" class="listing-page page-pad">

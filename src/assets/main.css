@@ -1402,10 +1402,9 @@ button {
   text-align: center;
 }
 
-.lightbox-close {
+.lightbox-close,
+.lightbox-nav {
   position: absolute;
-  top: 0.7rem;
-  right: 0.7rem;
   display: grid;
   width: 2.35rem;
   height: 2.35rem;
@@ -1421,7 +1420,28 @@ button {
     transform 180ms ease;
 }
 
-.lightbox-close svg {
+.lightbox-close {
+  top: 0.7rem;
+  right: 0.7rem;
+}
+
+.lightbox-nav {
+  top: 50%;
+  width: 2.75rem;
+  height: 2.75rem;
+  transform: translateY(-50%);
+}
+
+.lightbox-nav.previous {
+  left: 0.8rem;
+}
+
+.lightbox-nav.next {
+  right: 0.8rem;
+}
+
+.lightbox-close svg,
+.lightbox-nav svg {
   width: 1.1rem;
   height: 1.1rem;
   stroke: currentColor;
@@ -1432,15 +1452,41 @@ button {
 }
 
 .lightbox-close:hover,
-.lightbox-close:focus-visible {
+.lightbox-close:focus-visible,
+.lightbox-nav:hover,
+.lightbox-nav:focus-visible {
   border-color: rgb(255 255 255 / 0.42);
   background: rgb(192 132 252 / 0.38);
   transform: translateY(-1px);
 }
 
+.lightbox-nav:hover,
+.lightbox-nav:focus-visible {
+  transform: translateY(-50%) scale(1.04);
+}
+
 .lightbox-close:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
+}
+
+.lightbox-nav:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.lightbox-count {
+  justify-self: center;
+  margin-top: 0.55rem;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  color: rgb(255 255 255 / 0.78);
+  background: rgb(0 0 0 / 0.42);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.4;
+  backdrop-filter: blur(12px);
 }
 
 .empty-state {
@@ -1468,7 +1514,8 @@ button {
   .copy-code-button,
   .back-to-top,
   .markdown-body img,
-  .lightbox-close {
+  .lightbox-close,
+  .lightbox-nav {
     transition: none;
   }
 
@@ -1695,6 +1742,31 @@ button {
 
   .image-lightbox {
     padding: 0.75rem;
+  }
+
+  .lightbox-frame {
+    max-height: 86vh;
+  }
+
+  .lightbox-frame img {
+    max-height: 76vh;
+  }
+
+  .lightbox-nav {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
+
+  .lightbox-nav.previous {
+    left: 0.45rem;
+  }
+
+  .lightbox-nav.next {
+    right: 0.45rem;
+  }
+
+  .lightbox-count {
+    margin-top: 0.45rem;
   }
 
   .profile-avatar {
