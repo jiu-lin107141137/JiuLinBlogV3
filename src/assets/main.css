@@ -253,6 +253,70 @@ button {
   gap: 0.55rem;
 }
 
+.menu-toggle {
+  display: none;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--control-border);
+  border-radius: 999px;
+  color: var(--soft);
+  background: var(--switcher-bg);
+  transform: translateY(0);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+  border-color: rgb(192 132 252 / 0.42);
+  color: var(--text);
+  background: var(--accent-wash);
+  transform: translateY(-1px);
+}
+
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.menu-toggle span {
+  grid-area: 1 / 1;
+  width: 1.05rem;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateY(0);
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.menu-toggle span:first-child {
+  transform: translateY(-0.38rem);
+}
+
+.menu-toggle span:last-child {
+  transform: translateY(0.38rem);
+}
+
+.site-header.menu-open .menu-toggle span:first-child {
+  transform: rotate(45deg);
+}
+
+.site-header.menu-open .menu-toggle span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.35);
+}
+
+.site-header.menu-open .menu-toggle span:last-child {
+  transform: rotate(-45deg);
+}
+
 .theme-toggle {
   position: relative;
   display: grid;
@@ -379,6 +443,8 @@ button {
   .reading-progress span,
   .theme-toggle,
   .theme-icon,
+  .menu-toggle,
+  .menu-toggle span,
   .locale-switcher::before,
   .locale-button {
     transition: none;
@@ -1073,17 +1139,68 @@ button {
 
 @media (max-width: 720px) {
   .site-header {
-    grid-template-columns: 1fr;
-    justify-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.55rem 0.8rem;
+    justify-items: stretch;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu-toggle {
+    display: grid;
+    justify-self: end;
   }
 
   .nav-links {
+    grid-column: 1 / -1;
+    width: 100%;
     justify-content: start;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+    transition:
+      max-height 240ms ease,
+      opacity 180ms ease,
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .header-actions {
+    grid-column: 1 / -1;
     width: 100%;
     align-items: stretch;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+    transition:
+      max-height 240ms ease,
+      opacity 180ms ease,
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .site-header.menu-open .nav-links {
+    max-height: 4rem;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .site-header.menu-open .header-actions {
+    max-height: 4rem;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .locale-switcher {

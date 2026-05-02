@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, type CSSProperties } from 'vue';
+import { computed, onMounted, ref, watch, type CSSProperties } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { RouteParamsRawGeneric } from 'vue-router';
 import { localeLabels, supportedLocales, type Locale } from '@/i18n';
@@ -17,8 +17,10 @@ const localeSwitcherStyle = computed<CSSProperties>(() => ({
   '--locale-count': String(supportedLocales.length),
 }));
 const theme = ref<Theme>('dark');
+const menuOpen = ref(false);
 const isLightTheme = computed(() => theme.value === 'light');
 const themeLabel = computed(() => (isLightTheme.value ? 'Switch to dark theme' : 'Switch to light theme'));
+const menuLabel = computed(() => (menuOpen.value ? 'Collapse navigation menu' : 'Expand navigation menu'));
 
 const isTheme = (value: unknown): value is Theme => value === 'dark' || value === 'light';
 
@@ -31,6 +33,14 @@ const applyTheme = (nextTheme: Theme) => {
 
 const toggleTheme = () => {
   applyTheme(isLightTheme.value ? 'dark' : 'light');
+};
+
+const closeMenu = () => {
+  menuOpen.value = false;
+};
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
 };
 
 const switchLocale = async (locale: Locale) => {
@@ -46,6 +56,8 @@ const switchLocale = async (locale: Locale) => {
   if (route.name === 'category' && typeof route.params.category === 'string') {
     params.category = translateCategory(currentLocale.value, locale, route.params.category);
   }
+
+  closeMenu();
 
   await router.push({
     name: route.name ?? 'home',
@@ -64,11 +76,18 @@ onMounted(() => {
 
   applyTheme(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
 });
+
+watch(
+  () => route.fullPath,
+  () => {
+    closeMenu();
+  },
+);
 </script>
 
 <template>
-  <header class="site-header">
-    <RouterLink class="brand" :to="{ name: 'home', params: { locale: currentLocale } }">
+  <header class="site-header" :class="{ 'menu-open': menuOpen }" @keydown.esc="closeMenu">
+    <RouterLink class="brand" :to="{ name: 'home', params: { locale: currentLocale } }" @click="closeMenu">
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" focusable="false">
           <path d="M4 19L19 4" />
@@ -81,16 +100,30 @@ onMounted(() => {
       <span class="brand-text">JiuLin's Blog</span>
     </RouterLink>
 
-    <nav class="nav-links" aria-label="Primary">
-      <RouterLink :to="{ name: 'home', params: { locale: currentLocale } }">
+    <button
+      class="menu-toggle"
+      type="button"
+      :aria-expanded="menuOpen"
+      aria-controls="site-navigation site-header-actions"
+      :aria-label="menuLabel"
+      :title="menuLabel"
+      @click="toggleMenu"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-navigation" class="nav-links" aria-label="Primary">
+      <RouterLink :to="{ name: 'home', params: { locale: currentLocale } }" @click="closeMenu">
         {{ $t('nav.home') }}
       </RouterLink>
-      <RouterLink :to="{ name: 'archive', params: { locale: currentLocale } }">
+      <RouterLink :to="{ name: 'archive', params: { locale: currentLocale } }" @click="closeMenu">
         {{ $t('nav.archive') }}
       </RouterLink>
     </nav>
 
-    <div class="header-actions">
+    <div id="site-header-actions" class="header-actions">
       <button class="theme-toggle" type="button" :aria-label="themeLabel" :title="themeLabel" @click="toggleTheme">
         <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
           <circle cx="12" cy="12" r="4" />
