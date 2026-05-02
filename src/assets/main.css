@@ -48,7 +48,7 @@
   --gold: #b45309;
   --green: #15803d;
   --active-text: #ffffff;
-  --body-scrim: linear-gradient(180deg, rgb(238 232 244 / 0.58), rgb(238 232 244 / 0.86) 720px);
+  --body-scrim: linear-gradient(180deg, rgb(238 232 244 / 0.58), rgb(238 232 244 / 0.96) 720px);
   --ambient-overlay: linear-gradient(90deg, rgb(139 92 246 / 0.05), transparent 38%, rgb(225 29 72 / 0.035));
   --header-bg: rgb(248 244 252 / 0.76);
   --panel-bg: rgb(255 255 255 / 0.76);
