@@ -13,6 +13,8 @@ https://jiu-lin107141137.github.io/JiuLinBlogV3/
 - Markdown posts with frontmatter
 - English and Traditional Chinese content routes
 - Automatic archive, tag, and category pages
+- Year/month grouped listing pages with compact article rows
+- Related tags on filtered listing pages
 - Localized language switcher
 - Light and dark theme toggle
 - Responsive collapsible header
@@ -238,6 +240,17 @@ Tags and categories are generated from Markdown frontmatter.
 You do not need a separate tag config file. New tags and categories appear automatically in article lists, profile stats, archives, and filters.
 
 When switching languages on tag/category pages, the app maps localized terms by matching translated posts with the same slug.
+
+## Listing Pages
+
+Archive, tag, and category pages share the same grouped listing template.
+
+- Posts are grouped by year and month.
+- Each article is shown as a compact row for fast scanning.
+- Rows show date, title, description, reading time, category, and tags.
+- Tag and category pages keep their contextual heading and related tags above the grouped list.
+
+Related tags are derived from the posts currently shown on the page. For example, a tag page counts the other tags that appear on posts with that tag, then shows the most common related tags first.
 
 ## Styling
 
