@@ -259,6 +259,7 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .nav-links a,
   .nav-links a::before,
+  .reading-progress span,
   .locale-switcher::before,
   .locale-button {
     transition: none;
@@ -678,6 +679,28 @@ button {
   align-items: start;
   padding-top: clamp(2rem, 6vw, 4rem);
   padding-bottom: 4rem;
+}
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 100%;
+  height: 3px;
+  background: rgb(255 255 255 / 0.08);
+  pointer-events: none;
+}
+
+.reading-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--rose), var(--gold));
+  box-shadow: 0 0 1rem rgb(192 132 252 / 0.58);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 120ms linear;
 }
 
 .article-related,

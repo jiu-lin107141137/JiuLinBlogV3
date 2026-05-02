@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch, type CSSProperties } from 'vue';
 import { useRoute } from 'vue-router';
 import ArticleToc from '@/components/ArticleToc.vue';
 import { getPost, listPosts } from '@/utils/posts';
@@ -12,6 +12,35 @@ const slug = computed(() => String(route.params.slug));
 const post = computed(() => getPost(locale.value, slug.value));
 const rendered = computed(() => renderMarkdown(post.value?.body ?? ''));
 const activeHeadingId = ref('');
+const articleBody = ref<HTMLElement | null>(null);
+const readingProgress = ref(0);
+const readingProgressStyle = computed<CSSProperties>(() => ({
+  transform: `scaleX(${readingProgress.value})`,
+}));
+
+const clampProgress = (value: number) => Math.min(Math.max(value, 0), 1);
+
+const updateReadingProgress = () => {
+  const article = articleBody.value;
+  if (!article) {
+    readingProgress.value = 0;
+    return;
+  }
+
+  const rect = article.getBoundingClientRect();
+  const scrollTop = window.scrollY;
+  const articleTop = rect.top + scrollTop;
+  const readingOffset = 112;
+  const start = articleTop - readingOffset;
+  const end = articleTop + article.scrollHeight - window.innerHeight + readingOffset;
+
+  if (end <= start) {
+    readingProgress.value = scrollTop >= start ? 1 : 0;
+    return;
+  }
+
+  readingProgress.value = clampProgress((scrollTop - start) / (end - start));
+};
 
 const updateActiveHeading = () => {
   const headings = rendered.value.headings;
@@ -33,6 +62,11 @@ const updateActiveHeading = () => {
   activeHeadingId.value = currentHeading.id;
 };
 
+const updateArticleScrollState = () => {
+  updateActiveHeading();
+  updateReadingProgress();
+};
+
 const categoryPosts = computed(() => {
   if (!post.value) return [];
   return listPosts(locale.value)
@@ -51,26 +85,30 @@ const formatDate = (date?: string) => {
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', updateActiveHeading, { passive: true });
-  window.addEventListener('resize', updateActiveHeading);
+  window.addEventListener('scroll', updateArticleScrollState, { passive: true });
+  window.addEventListener('resize', updateArticleScrollState);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', updateActiveHeading);
-  window.removeEventListener('resize', updateActiveHeading);
+  window.removeEventListener('scroll', updateArticleScrollState);
+  window.removeEventListener('resize', updateArticleScrollState);
 });
 
 watch(
   () => rendered.value.html,
   async () => {
     await nextTick();
-    updateActiveHeading();
+    updateArticleScrollState();
   },
   { immediate: true },
 );
 </script>
 
 <template>
+  <div v-if="post" class="reading-progress" aria-hidden="true">
+    <span :style="readingProgressStyle"></span>
+  </div>
+
   <section v-if="post" class="article-page page-pad">
     <aside class="article-related">
       <RouterLink class="back-link" :to="{ name: 'archive', params: { locale } }">
@@ -94,7 +132,7 @@ watch(
       </RouterLink>
     </aside>
 
-    <article class="article-body">
+    <article ref="articleBody" class="article-body">
       <header class="article-header">
         <p class="eyebrow">{{ post.category }}</p>
         <h1>{{ post.title }}</h1>
