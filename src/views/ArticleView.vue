@@ -73,6 +73,17 @@ const categoryPosts = computed(() => {
     .filter((candidate) => candidate.category === post.value?.category)
     .slice(0, 6);
 });
+const adjacentPosts = computed(() => {
+  if (!post.value) return { previous: undefined, next: undefined };
+
+  const posts = listPosts(locale.value).filter((candidate) => candidate.category === post.value?.category);
+  const postIndex = posts.findIndex((candidate) => candidate.slug === post.value?.slug);
+
+  return {
+    previous: postIndex > 0 ? posts[postIndex - 1] : undefined,
+    next: postIndex >= 0 ? posts[postIndex + 1] : undefined,
+  };
+});
 
 const formatDate = (date?: string) => {
   if (!date) return '';
@@ -191,6 +202,41 @@ watch(
       </header>
 
       <div class="markdown-body" @click="copyCode" v-html="rendered.html"></div>
+
+      <nav
+        v-if="adjacentPosts.previous || adjacentPosts.next"
+        class="article-adjacent"
+        aria-label="Adjacent articles"
+      >
+        <RouterLink
+          v-if="adjacentPosts.previous"
+          class="adjacent-link previous"
+          :to="{ name: 'post', params: { locale, slug: adjacentPosts.previous.slug } }"
+        >
+          <svg class="adjacent-icon" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M19 12H5" />
+            <path d="M12 5l-7 7 7 7" />
+          </svg>
+          <span>{{ $t('article.previous') }}</span>
+          <strong>{{ adjacentPosts.previous.title }}</strong>
+          <time :datetime="adjacentPosts.previous.date">{{ formatDate(adjacentPosts.previous.date) }}</time>
+        </RouterLink>
+        <span v-else></span>
+
+        <RouterLink
+          v-if="adjacentPosts.next"
+          class="adjacent-link next"
+          :to="{ name: 'post', params: { locale, slug: adjacentPosts.next.slug } }"
+        >
+          <svg class="adjacent-icon" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="M12 5l7 7-7 7" />
+          </svg>
+          <span>{{ $t('article.next') }}</span>
+          <strong>{{ adjacentPosts.next.title }}</strong>
+          <time :datetime="adjacentPosts.next.date">{{ formatDate(adjacentPosts.next.date) }}</time>
+        </RouterLink>
+      </nav>
     </article>
 
     <ArticleToc :headings="rendered.headings" :active-heading-id="activeHeadingId" />

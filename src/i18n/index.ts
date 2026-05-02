@@ -40,6 +40,8 @@ export const messages = {
       back: 'Back to articles',
       missing: 'Article not found.',
       updated: 'Updated',
+      previous: 'Previous',
+      next: 'Next',
     },
     listing: {
       tag: 'Tag',
@@ -78,6 +80,8 @@ export const messages = {
       back: '回到文章列表',
       missing: '找不到這篇文章。',
       updated: '更新',
+      previous: '上一篇',
+      next: '下一篇',
     },
     listing: {
       tag: '標籤',
