@@ -28,6 +28,8 @@
   --pre-bg: #0c1016;
   --progress-track: rgb(255 255 255 / 0.07);
   --progress-fill: rgb(192 132 252 / 0.72);
+  --category-pill-bg: rgb(134 239 172 / 0.08);
+  --category-pill-border: rgb(134 239 172 / 0.28);
   --shadow: 0 18px 60px rgb(0 0 0 / 0.28);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -63,6 +65,8 @@
   --pre-bg: #f8fafc;
   --progress-track: rgb(25 20 33 / 0.08);
   --progress-fill: rgb(124 58 237 / 0.68);
+  --category-pill-bg: rgb(21 128 61 / 0.13);
+  --category-pill-border: rgb(21 128 61 / 0.34);
   --shadow: 0 18px 60px rgb(45 34 57 / 0.13);
 }
 
@@ -922,10 +926,10 @@ button {
   min-height: 1.8rem;
   align-items: center;
   padding: 0 0.6rem;
-  border: 1px solid rgb(134 239 172 / 0.28);
+  border: 1px solid var(--category-pill-border);
   border-radius: 999px;
   color: var(--green);
-  background: rgb(134 239 172 / 0.08);
+  background: var(--category-pill-bg);
   font-size: 0.84rem;
   font-weight: 700;
 }
