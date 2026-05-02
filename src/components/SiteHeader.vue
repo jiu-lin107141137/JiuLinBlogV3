@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type CSSProperties } from 'vue';
+import { computed, onMounted, ref, type CSSProperties } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { RouteParamsRawGeneric } from 'vue-router';
 import { localeLabels, supportedLocales, type Locale } from '@/i18n';
@@ -7,6 +7,8 @@ import { translateCategory, translateTag } from '@/utils/posts';
 
 const route = useRoute();
 const router = useRouter();
+type Theme = 'dark' | 'light';
+const themeStorageKey = 'jiulin-blog-theme';
 
 const currentLocale = computed(() => route.params.locale as Locale);
 const activeLocaleIndex = computed(() => supportedLocales.indexOf(currentLocale.value));
@@ -14,6 +16,22 @@ const localeSwitcherStyle = computed<CSSProperties>(() => ({
   '--active-index': String(Math.max(activeLocaleIndex.value, 0)),
   '--locale-count': String(supportedLocales.length),
 }));
+const theme = ref<Theme>('dark');
+const isLightTheme = computed(() => theme.value === 'light');
+const themeLabel = computed(() => (isLightTheme.value ? 'Switch to dark theme' : 'Switch to light theme'));
+
+const isTheme = (value: unknown): value is Theme => value === 'dark' || value === 'light';
+
+const applyTheme = (nextTheme: Theme) => {
+  theme.value = nextTheme;
+  document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.style.colorScheme = nextTheme;
+  window.localStorage.setItem(themeStorageKey, nextTheme);
+};
+
+const toggleTheme = () => {
+  applyTheme(isLightTheme.value ? 'dark' : 'light');
+};
 
 const switchLocale = async (locale: Locale) => {
   const params: RouteParamsRawGeneric = {
@@ -36,6 +54,16 @@ const switchLocale = async (locale: Locale) => {
     hash: route.hash,
   });
 };
+
+onMounted(() => {
+  const initialTheme = document.documentElement.dataset.theme;
+  if (isTheme(initialTheme)) {
+    theme.value = initialTheme;
+    return;
+  }
+
+  applyTheme(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+});
 </script>
 
 <template>
@@ -62,17 +90,36 @@ const switchLocale = async (locale: Locale) => {
       </RouterLink>
     </nav>
 
-    <div class="locale-switcher" :style="localeSwitcherStyle" :aria-label="$t('nav.language')">
-      <button
-        v-for="locale in supportedLocales"
-        :key="locale"
-        class="locale-button"
-        :class="{ active: locale === currentLocale }"
-        type="button"
-        @click="switchLocale(locale)"
-      >
-        {{ localeLabels[locale] }}
+    <div class="header-actions">
+      <button class="theme-toggle" type="button" :aria-label="themeLabel" :title="themeLabel" @click="toggleTheme">
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2" />
+          <path d="M12 20v2" />
+          <path d="M4.93 4.93l1.41 1.41" />
+          <path d="M17.66 17.66l1.41 1.41" />
+          <path d="M2 12h2" />
+          <path d="M20 12h2" />
+          <path d="M6.34 17.66l-1.41 1.41" />
+          <path d="M19.07 4.93l-1.41 1.41" />
+        </svg>
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="M20.5 14.5A8.4 8.4 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" />
+        </svg>
       </button>
+
+      <div class="locale-switcher" :style="localeSwitcherStyle" :aria-label="$t('nav.language')">
+        <button
+          v-for="locale in supportedLocales"
+          :key="locale"
+          class="locale-button"
+          :class="{ active: locale === currentLocale }"
+          type="button"
+          @click="switchLocale(locale)"
+        >
+          {{ localeLabels[locale] }}
+        </button>
+      </div>
     </div>
   </header>
 </template>

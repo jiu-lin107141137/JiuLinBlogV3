@@ -7,6 +7,17 @@
       name="description"
       content="JiuLin's personal blog, written in Markdown and published with Vue 3."
     />
+    <script>
+      (() => {
+        const storageKey = 'jiulin-blog-theme';
+        const storedTheme = window.localStorage.getItem(storageKey);
+        const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : systemTheme;
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>JiuLin Blog</title>
   </head>
