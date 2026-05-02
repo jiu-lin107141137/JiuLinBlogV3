@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import { defaultLocale, isLocale, type Locale } from '@/i18n';
 
 const pickInitialLocale = (): Locale => {
@@ -12,7 +12,7 @@ const pickInitialLocale = (): Locale => {
 };
 
 export const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior(to) {
     if (to.hash) return { el: to.hash, top: 88, behavior: 'smooth' };
     return { top: 0 };
