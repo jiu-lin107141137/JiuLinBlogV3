@@ -1152,11 +1152,15 @@ button {
   text-underline-offset: 0.2em;
 }
 
-.markdown-body img {
+.article-image {
+  margin: 1.45rem auto;
+}
+
+.markdown-body .article-image img {
   display: block;
   width: min(100%, 680px);
   max-height: min(72vh, 560px);
-  margin: 1.45rem auto;
+  margin: 0 auto;
   object-fit: cover;
   border: 1px solid var(--panel-border);
   border-radius: 8px;
@@ -1169,16 +1173,25 @@ button {
     transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.markdown-body img:hover,
-.markdown-body img:focus-visible {
+.markdown-body .article-image img:hover,
+.markdown-body .article-image img:focus-visible {
   border-color: var(--hero-action-hover-border);
   box-shadow: var(--shadow), 0 0 24px rgb(192 132 252 / 0.12);
   transform: translateY(-2px);
 }
 
-.markdown-body img:focus-visible {
+.markdown-body .article-image img:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
+}
+
+.image-caption {
+  width: min(100%, 680px);
+  margin: 0.65rem auto 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .markdown-body code {

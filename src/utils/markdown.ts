@@ -32,6 +32,14 @@ const withBaseUrl = (src: string) => {
   return `${cleanBase}${cleanSrc}`;
 };
 
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 const md = new MarkdownIt({
   html: false,
   linkify: true,
@@ -77,6 +85,7 @@ md.renderer.rules.fence = (tokens, idx, options, env, self) => {
 md.renderer.rules.image = (tokens, idx, options, env, self) => {
   const token = tokens[idx];
   const src = token.attrGet('src');
+  const alt = token.content;
 
   if (src) token.attrSet('src', withBaseUrl(src));
 
@@ -85,7 +94,12 @@ md.renderer.rules.image = (tokens, idx, options, env, self) => {
   token.attrSet('tabindex', '0');
   token.attrSet('role', 'button');
 
-  return defaultImage(tokens, idx, options, env, self);
+  const renderedImage = defaultImage(tokens, idx, options, env, self);
+  const caption = alt.trim()
+    ? `<figcaption class="image-caption">${escapeHtml(alt.trim())}</figcaption>`
+    : '';
+
+  return `<figure class="article-image">${renderedImage}${caption}</figure>`;
 };
 
 const addLinkTargets = (tokens: MarkdownToken[]) => {
