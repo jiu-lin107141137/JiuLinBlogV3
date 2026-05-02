@@ -866,6 +866,184 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+.archive-groups {
+  display: grid;
+  gap: 2rem;
+}
+
+.archive-year {
+  display: grid;
+  gap: 1rem;
+}
+
+.archive-year h2 {
+  margin: 0;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--panel-border);
+  color: var(--text);
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+}
+
+.archive-month {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.archive-month-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.archive-month-heading h3 {
+  margin: 0;
+  color: var(--soft);
+  font-size: 1.05rem;
+}
+
+.archive-month-heading span {
+  display: inline-flex;
+  min-height: 1.7rem;
+  align-items: center;
+  padding: 0 0.6rem;
+  border: 1px solid var(--listing-count-border);
+  border-radius: 999px;
+  color: var(--listing-count-text);
+  background: var(--listing-count-bg);
+  box-shadow: 0 0.45rem 1.25rem rgb(0 0 0 / 0.08);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.archive-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive-list li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: var(--panel-bg);
+  box-shadow: 0 0.7rem 1.8rem rgb(0 0 0 / 0.08);
+  backdrop-filter: blur(18px);
+  transform: translateY(0);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.archive-list li:hover,
+.archive-list li:focus-within {
+  border-color: var(--hero-action-hover-border);
+  background: var(--hero-action-hover-bg);
+  box-shadow: var(--shadow), 0 0 24px rgb(192 132 252 / 0.12);
+  transform: translateY(-2px);
+}
+
+.archive-list time {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.55;
+  white-space: nowrap;
+}
+
+.archive-post-title {
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.archive-post-title:hover,
+.archive-post-title:focus-visible {
+  color: var(--accent);
+}
+
+.archive-post-title:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.archive-list p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.archive-post-meta,
+.archive-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+  margin-top: 0.55rem;
+}
+
+.archive-post-meta span,
+.archive-post-meta a {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.archive-post-meta a {
+  color: var(--green);
+}
+
+.archive-post-meta span + a::before {
+  content: "/";
+  margin-right: 0.65rem;
+  color: var(--muted);
+}
+
+.archive-post-tags {
+  margin-top: 0.75rem;
+}
+
+.archive-post-tags a {
+  display: inline-flex;
+  min-height: 1.55rem;
+  align-items: center;
+  padding: 0 0.48rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.archive-post-meta a:hover,
+.archive-post-meta a:focus-visible,
+.archive-post-tags a:hover,
+.archive-post-tags a:focus-visible {
+  color: var(--text);
+}
+
+.archive-post-tags a:hover,
+.archive-post-tags a:focus-visible {
+  border-color: var(--hero-action-hover-border);
+  background: var(--hero-action-hover-bg);
+}
+
+.archive-post-meta a:focus-visible,
+.archive-post-tags a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .post-card {
   position: relative;
   padding: 1.1rem;
@@ -1614,6 +1792,7 @@ button {
   .post-card::after,
   .post-card-title::after,
   .listing-related a,
+  .archive-list li,
   .copy-code-button,
   .back-to-top,
   .markdown-body img,
@@ -1825,6 +2004,11 @@ button {
   .section-heading,
   .profile-panel {
     grid-template-columns: 1fr;
+  }
+
+  .archive-list li {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
   }
 
   .article-adjacent {
