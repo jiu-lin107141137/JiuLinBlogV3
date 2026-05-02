@@ -459,6 +459,7 @@ button {
   .nav-links a,
   .nav-links a::before,
   .reading-progress span,
+  .back-to-top,
   .theme-toggle,
   .theme-icon,
   .menu-toggle,
@@ -905,6 +906,61 @@ button {
   transition: transform 120ms linear;
 }
 
+.back-to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 9;
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border: 1px solid var(--control-border);
+  border-radius: 999px;
+  color: var(--soft);
+  background: var(--panel-bg);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.8rem) scale(0.94);
+  transition:
+    opacity 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.back-to-top svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  border-color: var(--hero-action-hover-border);
+  color: var(--text);
+  background: var(--hero-action-hover-bg);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .article-related,
 .article-toc {
   position: sticky;
@@ -1293,7 +1349,8 @@ button {
   .post-card::before,
   .post-card::after,
   .post-card-title::after,
-  .copy-code-button {
+  .copy-code-button,
+  .back-to-top {
     transition: none;
   }
 
@@ -1509,6 +1566,13 @@ button {
   .adjacent-link {
     min-height: 4.8rem;
     padding: 0.75rem;
+  }
+
+  .back-to-top {
+    right: 0.85rem;
+    bottom: 0.85rem;
+    width: 2.55rem;
+    height: 2.55rem;
   }
 
   .profile-avatar {

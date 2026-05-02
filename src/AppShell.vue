@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ParticlesBackground from '@/components/ParticlesBackground.vue';
+import BackToTopButton from '@/components/BackToTopButton.vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 </script>
 
@@ -13,5 +14,6 @@ import SiteHeader from '@/components/SiteHeader.vue';
     <footer class="site-footer">
       {{ $t('footer.built') }}
     </footer>
+    <BackToTopButton />
   </div>
 </template>
