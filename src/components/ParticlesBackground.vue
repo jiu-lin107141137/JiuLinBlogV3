@@ -1,5 +1,57 @@
 <script setup lang="ts">
-const particlesOptions = {
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+
+type Theme = 'dark' | 'light';
+
+const theme = ref<Theme>('dark');
+let themeObserver: MutationObserver | null = null;
+
+const isTheme = (value: unknown): value is Theme => value === 'dark' || value === 'light';
+
+const updateTheme = () => {
+  const currentTheme = document.documentElement.dataset.theme;
+  theme.value = isTheme(currentTheme) ? currentTheme : 'dark';
+};
+
+onMounted(() => {
+  updateTheme();
+
+  themeObserver = new MutationObserver(updateTheme);
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+});
+
+onBeforeUnmount(() => {
+  themeObserver?.disconnect();
+});
+
+const particleTheme = computed(() =>
+  theme.value === 'light'
+    ? {
+        colors: ['#7c3aed', '#be123c', '#475569'],
+        linkColor: '#7c3aed',
+        linkOpacity: 0.13,
+        grabOpacity: 0.22,
+        opacity: {
+          min: 0.12,
+          max: 0.34,
+        },
+      }
+    : {
+        colors: ['#c084fc', '#e9d5ff', '#fb7185'],
+        linkColor: '#c084fc',
+        linkOpacity: 0.16,
+        grabOpacity: 0.28,
+        opacity: {
+          min: 0.16,
+          max: 0.46,
+        },
+      },
+);
+
+const particlesOptions = computed(() => ({
   fullScreen: {
     enable: false,
   },
@@ -24,20 +76,20 @@ const particlesOptions = {
       grab: {
         distance: 150,
         links: {
-          opacity: 0.28,
+          opacity: particleTheme.value.grabOpacity,
         },
       },
     },
   },
   particles: {
     color: {
-      value: ['#c084fc', '#e9d5ff', '#fb7185'],
+      value: particleTheme.value.colors,
     },
     links: {
-      color: '#c084fc',
+      color: particleTheme.value.linkColor,
       distance: 135,
       enable: true,
-      opacity: 0.16,
+      opacity: particleTheme.value.linkOpacity,
       width: 1,
     },
     move: {
@@ -57,10 +109,7 @@ const particlesOptions = {
       value: 92,
     },
     opacity: {
-      value: {
-        min: 0.16,
-        max: 0.46,
-      },
+      value: particleTheme.value.opacity,
     },
     shape: {
       type: 'circle',
@@ -72,11 +121,11 @@ const particlesOptions = {
       },
     },
   },
-};
+}));
 </script>
 
 <template>
   <div class="particle-background" aria-hidden="true">
-    <vue-particles id="blog-particles" class="particle-field" :options="particlesOptions" />
+    <vue-particles :id="`blog-particles-${theme}`" :key="theme" class="particle-field" :options="particlesOptions" />
   </div>
 </template>
