@@ -3,7 +3,7 @@ export type Frontmatter = Record<string, FrontmatterValue>;
 
 const frontmatterPattern = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
 
-const stripQuotes = (value: string) => value.replace(/^['"]|['"]$/g, '').trim();
+const stripQuotes = (value: string) => value.trim().replace(/^['"]|['"]$/g, '').trim();
 
 const parseValue = (value: string): FrontmatterValue => {
   const trimmed = value.trim();

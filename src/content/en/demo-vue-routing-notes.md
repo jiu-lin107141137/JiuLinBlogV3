@@ -1,8 +1,8 @@
 ---
-title: "Vue Routing Notes"
+title: "[Demo] Vue Routing Notes"
 description: "A short companion note showing how localized routes shape the blog navigation."
 date: "2026-04-30"
-tags: ["Vue", "Router", "Architecture"]
+tags: ["Vue", "Router", "Architecture", "demo"]
 category: "Blog"
 ---
 

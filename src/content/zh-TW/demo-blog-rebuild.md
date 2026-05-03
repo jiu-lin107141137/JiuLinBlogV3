@@ -1,8 +1,8 @@
 ---
-title: "重新打造這個部落格"
+title: "[Demo] 重新打造這個部落格"
 description: "新個人網站的方向：以 Markdown 寫作、支援本地化路由，並整理成更乾淨的 Vue 3 架構。"
 date: "2026-05-01"
-tags: ["Vue", "個人專案", "架構"]
+tags: ["Vue", "個人專案", "架構", "demo"]
 category: "部落格"
 ---
 

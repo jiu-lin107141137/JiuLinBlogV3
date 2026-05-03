@@ -1,8 +1,8 @@
 ---
-title: "圖片燈箱展示"
+title: "[Demo] 圖片燈箱展示"
 description: "用一篇小文章測試 Markdown 文章裡的圖片預覽效果。"
 date: "2026-05-02"
-tags: ["Markdown", "圖片", "介面"]
+tags: ["Markdown", "圖片", "介面", "demo"]
 category: "部落格"
 ---
 

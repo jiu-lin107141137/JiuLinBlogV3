@@ -1,8 +1,8 @@
 ---
-title: "Vue 路由筆記"
+title: "[Demo] Vue 路由筆記"
 description: "一篇簡短的補充筆記，用來展示本地化路由如何影響部落格導覽。"
 date: "2026-04-30"
-tags: ["Vue", "Router", "架構"]
+tags: ["Vue", "Router", "架構", "demo"]
 category: "部落格"
 ---
 

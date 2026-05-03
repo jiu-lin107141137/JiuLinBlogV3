@@ -1,8 +1,8 @@
 ---
-title: "BB84 QKD Notes"
+title: "[Demo] BB84 QKD Notes"
 description: "A compact note on the BB84 quantum key distribution protocol and the ideas that make eavesdropping detectable."
 date: "2023-04-23"
-tags: ["Quantum", "Protocol", "Class Work"]
+tags: ["Quantum", "Protocol", "Class Work", "demo"]
 category: "Quantum"
 ---
 

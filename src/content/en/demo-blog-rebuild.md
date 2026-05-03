@@ -1,8 +1,8 @@
 ---
-title: "Rebuilding This Blog"
+title: "[Demo] Rebuilding This Blog"
 description: "The new direction for my personal page: Markdown-first writing, localized routes, and a cleaner Vue 3 architecture."
 date: "2026-05-01"
-tags: ["Vue", "Side Project", "Architecture"]
+tags: ["Vue", "Side Project", "Architecture", "demo"]
 category: "Blog"
 ---
 

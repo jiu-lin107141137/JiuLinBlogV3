@@ -1,8 +1,8 @@
 ---
-title: "Image Lightbox Demo"
+title: "[Demo] Image Lightbox Demo"
 description: "A small article for checking how images behave inside Markdown posts."
 date: "2026-05-02"
-tags: ["Markdown", "Images", "UI"]
+tags: ["Markdown", "Images", "UI", "demo"]
 category: "Blog"
 ---
 
