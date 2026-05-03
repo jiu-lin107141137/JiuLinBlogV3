@@ -1,3 +1,8 @@
+/* ==========================================================================
+   Design Tokens
+   Theme variables used across layout, surfaces, controls, articles, and cards.
+   ========================================================================== */
+
 :root {
   color-scheme: dark;
   --bg: #111418;
@@ -80,6 +85,11 @@
   --shadow: 0 18px 60px rgb(45 34 57 / 0.13);
 }
 
+/* ==========================================================================
+   Base Reset And Page Background
+   Global element defaults, background image layers, and the app shell stacking.
+   ========================================================================== */
+
 * {
   box-sizing: border-box;
 }
@@ -151,6 +161,11 @@ button {
   width: 100%;
   height: 100%;
 }
+
+/* ==========================================================================
+   Site Header And Navigation
+   Brand, primary nav, mobile menu button, theme toggle, and locale switcher.
+   ========================================================================== */
 
 .site-header {
   position: sticky;
@@ -461,6 +476,11 @@ button {
   outline-offset: 3px;
 }
 
+/* ==========================================================================
+   Motion Preferences
+   Keep interaction states accessible for users who prefer reduced motion.
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
   .nav-links a,
   .nav-links a::before,
@@ -479,6 +499,11 @@ button {
 .site-main {
   min-height: calc(100vh - 132px);
 }
+
+/* ==========================================================================
+   Shared Layout Primitives
+   Page width, hero framing, shared buttons, card surfaces, and common metadata.
+   ========================================================================== */
 
 .page-pad {
   width: min(1180px, calc(100% - 2rem));
@@ -562,6 +587,11 @@ button {
   color: var(--text);
   background: var(--accent-wash);
 }
+
+/* ==========================================================================
+   Home Page And Profile Panel
+   Two-column home layout, author profile, stats, and tag cloud.
+   ========================================================================== */
 
 .home-layout {
   display: grid;
@@ -722,6 +752,11 @@ button {
   font-weight: 600;
 }
 
+/* ==========================================================================
+   Listing Filters And Headings
+   Section headings, search input, featured tags, and related tag chips.
+   ========================================================================== */
+
 .content-column {
   min-width: 0;
 }
@@ -856,6 +891,11 @@ button {
   font-size: 0.72rem;
   font-weight: 800;
 }
+
+/* ==========================================================================
+   Post Lists And Archive
+   Latest post grids, archive groups, archive cards, and post metadata tags.
+   ========================================================================== */
 
 .post-list {
   display: grid;
@@ -1138,6 +1178,11 @@ button {
   color: var(--green);
 }
 
+/* ==========================================================================
+   Article Layout And Floating Controls
+   Article columns, reading progress, back-to-top, related posts, and TOC.
+   ========================================================================== */
+
 .listing-page {
   padding-top: clamp(3rem, 8vw, 6rem);
   padding-bottom: 4rem;
@@ -1375,6 +1420,11 @@ button {
 .article-toc a:focus-visible::before {
   background: var(--accent);
 }
+
+/* ==========================================================================
+   Article Content
+   Markdown typography, article images, code blocks, quotes, and adjacent links.
+   ========================================================================== */
 
 .article-body {
   overflow: hidden;
@@ -1636,6 +1686,11 @@ button {
   outline-offset: 3px;
 }
 
+/* ==========================================================================
+   Image Lightbox
+   Fullscreen article image preview, navigation buttons, and count badge.
+   ========================================================================== */
+
 .image-lightbox {
   position: fixed;
   inset: 0;
@@ -1776,11 +1831,19 @@ button {
   color: var(--muted);
 }
 
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
 .site-footer {
   padding: 2rem 1rem 2.6rem;
   color: var(--muted);
   text-align: center;
 }
+
+/* ==========================================================================
+   Global Motion Overrides
+   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .particle-background {
@@ -1805,6 +1868,11 @@ button {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   Responsive Layout
+   Wide screens, tablet stacking, and mobile header/content adjustments.
+   ========================================================================== */
 
 @media (min-width: 1440px) {
   .page-pad {
