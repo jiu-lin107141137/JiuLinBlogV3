@@ -14,7 +14,9 @@ https://jiu-lin107141137.github.io/JiuLinBlogV3/
 - English and Traditional Chinese content routes
 - Automatic archive, tag, and category pages
 - Year/month grouped listing pages with compact article rows
-- Related tags on filtered listing pages
+- Related tags with count badges on filtered listing pages
+- Homepage search across titles, summaries, categories, and tags
+- Profile panel with generated post, category, and tag counts
 - Localized language switcher
 - Light and dark theme toggle
 - Responsive collapsible header
@@ -131,6 +133,9 @@ The app is a static Vite SPA.
 - `src/main.ts` creates the Vue app and registers router, i18n, and tsParticles.
 - `src/App.vue` syncs the route locale into Vue I18n and local storage.
 - `src/AppShell.vue` owns the shared page shell: background, header, main content, footer, and back-to-top button.
+- `src/views/HomeView.vue` renders the hero, profile panel, search field, featured tags, and latest post cards.
+- `src/views/ListingView.vue` renders archive, tag, and category listings with related tag chips.
+- `src/views/ArticleView.vue` renders articles, reading progress, same-category links, image lightbox state, and adjacent post navigation.
 - `src/router/index.ts` defines hash-based, locale-prefixed routes.
 - `src/utils/posts.ts` loads Markdown files with `import.meta.glob`, parses metadata, and computes reading time.
 - `src/utils/frontmatter.ts` parses frontmatter.
@@ -239,6 +244,8 @@ Tags and categories are generated from Markdown frontmatter.
 
 You do not need a separate tag config file. New tags and categories appear automatically in article lists, profile stats, archives, and filters.
 
+The profile panel shows generated category and tag counts. Filtered listing pages also show related tags with compact count badges, derived from the posts currently visible on the page.
+
 When switching languages on tag/category pages, the app maps localized terms by matching translated posts with the same slug.
 
 ## Listing Pages
@@ -250,7 +257,7 @@ Archive, tag, and category pages share the same grouped listing template.
 - Rows show date, title, description, reading time, category, and tags.
 - Tag and category pages keep their contextual heading and related tags above the grouped list.
 
-Related tags are derived from the posts currently shown on the page. For example, a tag page counts the other tags that appear on posts with that tag, then shows the most common related tags first.
+Related tags are derived from the posts currently shown on the page. For example, a tag page counts the other tags that appear on posts with that tag, then shows the most common related tags first. The count badge stays visually stable while the surrounding chip provides hover and focus feedback.
 
 ## Styling
 
