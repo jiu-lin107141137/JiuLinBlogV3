@@ -116,7 +116,7 @@ const archiveGroups = computed(() => {
         :key="relatedTag.name"
         :to="{ name: 'tag', params: { locale, tag: relatedTag.name } }"
       >
-        {{ relatedTag.name }}
+        <span class="related-tag-name">{{ relatedTag.name }}</span>
         <small>{{ relatedTag.count }}</small>
       </RouterLink>
     </nav>
